@@ -76,6 +76,10 @@ class SeqtoSeq(nn.Module):
                 # de_x: (batch_size, 1, vocab_size (feature))
                 de_x, state = self.decoder(de_x, state)
                 yhat.append(de_x)
+				# 
+                _, idxs = torch.max(de_x, 2)
+                de_x = nn.functional.one_hot(idxs, num_classes=11).float()
+                #
             yhat = torch.cat(yhat, 1)
         return yhat
     
